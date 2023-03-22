@@ -1,0 +1,22 @@
+<section class="vh-100" style="background-color: rgb(45, 47, 47);">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col col-lg-8 col-xl-6">
+          <div class="card rounded-3">
+            <div class="card-body p-4">
+  
+              <p class="mb-2 badge bg-danger"><span class="h2 me-2">Deleted Todos</span> </p>
+              <p class="text-muted pb-2">04/01/2020 • ML - 1321</p>
+  
+              <ul class="list-group rounded-0">
+                <li *ngFor="let todo of todos" class="list-group-item border-0 d-flex align-items-center ps-0">
+                  {{todo.todo}}
+                </li>
+              </ul>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
