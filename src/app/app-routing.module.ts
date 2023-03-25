@@ -10,7 +10,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
-  {path:'',component:MyTodoComponent,canActivate:[AuthGuard]},
   {path:'todos',component:MyTodoComponent,canActivate:[AuthGuard]},
   {path:'deletedTodo',component:DeletedTodosComponent,canActivate:[AuthGuard]},
   {path:'favouriteTodo',component:FavouriteTodosComponent,canActivate:[AuthGuard]},
