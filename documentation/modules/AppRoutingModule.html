@@ -84,6 +84,7 @@ import { RegisterComponent } from &#x27;./components/register/register.component
 import { NotFoundComponent } from &#x27;./components/not-found/not-found.component&#x27;;
 
 const routes: Routes &#x3D; [
+  {path:&#x27;&#x27;,component:MyTodoComponent,canActivate:[AuthGuard]},
   {path:&#x27;todos&#x27;,component:MyTodoComponent,canActivate:[AuthGuard]},
   {path:&#x27;deletedTodo&#x27;,component:DeletedTodosComponent,canActivate:[AuthGuard]},
   {path:&#x27;favouriteTodo&#x27;,component:FavouriteTodosComponent,canActivate:[AuthGuard]},
