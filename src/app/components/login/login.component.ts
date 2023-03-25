@@ -1,4 +1,5 @@
 import { Component} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 import { UserService } from 'src/app/services/user.service';
@@ -10,18 +11,22 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LoginComponent {
 
-  userQuote:string='';
-  userName:string='';
+  myform:FormGroup;
+
   constructor(private _auth:AuthGuard , private _router:Router, private _user:UserService){
-    if(_auth.isLoggd)
-        _router.navigate(['/todos']);
+
+    this.myform = new FormGroup({
+      email:new FormControl(null,[Validators.required,Validators.email]),
+      password: new FormControl(null,[Validators.required])
+    }); 
+    if(_auth.isLoggd)  _router.navigate(['/todos']);
+
   }
+
+
   onLogin(){
-    if(this.userName.trim()===''|| this.userQuote.trim()==='')
+    if(!this.myform.valid)
       return;
-    this._auth.isLoggd = true ;
-    this._router.navigate(['/todos']);
-    this._user.setUser(this.userName,this.userQuote);    
-    
+    this._user.login(this.myform.value.email,this.myform.value.password);        
   }
 }

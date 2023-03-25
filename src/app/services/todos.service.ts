@@ -1,60 +1,70 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-interface Todo {
-  id:number,
-  todo:string,
-  isCompleted:boolean,
-  isDeleted:boolean,
-  isFavourite:boolean,
-  userId:number
-};
+import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Todo } from '../Interfaces/Todo';
+import { UserService } from './user.service';
+
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class TodosService {
-  constructor( private route:Router){
+  todos:Todo[];
 
+  compeletedPercentage = new BehaviorSubject('50.53');
+  compeletedPercentage$=this.compeletedPercentage.asObservable();
+
+  constructor( private route:Router,private _http: HttpClient,private _user:UserService){
+       this.todos = JSON.parse(localStorage.getItem('todos')||'');
   }
-
-  todos:Todo[]=
-  [
-    {"id":1,"todo":"Do something nice for someone I care about","isCompleted":true,"isDeleted":false,"isFavourite":false,"userId":1},
-    {"id":2,"todo":"Memorize the fifty states and their capitals","isCompleted":true,"isDeleted":false,"isFavourite":false,"userId":1},
-    {"id":3,"todo":"Watch a classic movie","isCompleted":true,"isDeleted":false,"isFavourite":true,"userId":1},
-    {"id":4,"todo":"Contribute code or a monetary donation to an open-source software project","isCompleted":false,"isDeleted":true,"isFavourite":true,"userId":1},
-    {"id":27,"todo":"Have a photo session with some friends","isCompleted":true,"isDeleted":false,"isFavourite":true,"userId":1},
-    {"id":28,"todo":"Go to the gym","isCompleted":true,"isDeleted":false,"isFavourite":false,"userId":1},
-    {"id":29,"todo":"Make own LEGO creation","isCompleted":true,"isDeleted":true,"isFavourite":true,"userId":1},
-    {"id":30,"todo":"Take cat on a walk","isCompleted":false,"isDeleted":false,"isFavourite":false,"userId":1}
-  ]
-
-  getAllTodo(){
-    return this.todos.filter(todo => !todo.isDeleted );
+  
+  getAllTodo(){    
+    return this.todos.filter(todo => todo.userId === this._user.currentUser?.id && !todo.isDeleted );
   }
 
   getDeletedTodo(){
-    return this.todos.filter(todo => todo.isDeleted );
+    return this.todos.filter(todo => todo.userId === this._user.currentUser?.id &&  todo.isDeleted );
   }
 
   getFavouriteTodo(){
-    return this.todos.filter(todo => todo.isFavourite );
+    return this.todos.filter(todo => todo.userId === this._user.currentUser?.id && todo.isFavourite );
   }
 
-  getCompletedTodo(){
-    return this.todos.filter(todo => todo.isCompleted && !todo.isDeleted );
+  getCompletedTodo() {
+    return this.todos.filter(todo => todo.userId === this._user.currentUser?.id &&  todo.isCompleted && !todo.isDeleted );
   }
 
   getPercentage(){
-    return (this.getCompletedTodo().length/this.getAllTodo().length)*100;
+    let pre:string=((this.getCompletedTodo().length/this.getAllTodo().length)*100).toFixed(2);
+    this.compeletedPercentage.next(pre);
   }
-  deleteTodo(id:number){
-    console.log(this.todos.find(todo=>todo.id===id));
 
+  addTodo(todo:string){
+    let id:number = this.todos.length ? this.todos[this.todos.length-1].id+1 : 1; 
+    if(todo.trim().length==0)
+      return;   
+    this.todos.push({
+      id,
+      todo,
+      isCompleted:false,
+      isDeleted:false,
+      isFavourite:false,
+      userId:this._user.currentUser?.id || 1
+    });
+    this.commit();
+  };
+
+
+
+
+  deleteTodo(id:number){
     this.todos.map((todo) => {
         if(todo.id===id)
           todo.isDeleted=true;
     });
-    console.log(this.todos.find(todo=>todo.id===id)); 
+    this.commit();
   }
 
   addToFavourite(id:number){
@@ -62,7 +72,7 @@ export class TodosService {
         if(todo.id===id)
           todo.isFavourite=true;
     });
-    //this.route.navigate(['/login']);
+    this.commit();
   }
 
   completeTodo(id:number){
@@ -70,6 +80,11 @@ export class TodosService {
         if(todo.id===id)
           todo.isCompleted=!todo.isCompleted;
     });
+    this.commit();
+    this.getPercentage();
   }
 
+  commit(){
+    localStorage.setItem('todos',JSON.stringify(this.todos));
+  }
 }

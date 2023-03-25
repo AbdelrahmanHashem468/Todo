@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
+import { Todo } from 'src/app/Interfaces/Todo';
 import { TodosService } from 'src/app/services/todos.service';
-interface Todo {
-  id:number,
-  todo:string,
-  isCompleted:boolean,
-  isDeleted:boolean,
-  isFavourite:boolean,
-  userId:number
-};
+
 @Component({
   selector: 'app-completed-todos',
   templateUrl: './completed-todos.component.html',

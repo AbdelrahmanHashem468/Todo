@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,6 +12,9 @@ import { TodoComponent } from './components/todo/todo.component';
 import { DeletedTodosComponent } from './components/deleted-todos/deleted-todos.component';
 import { FavouriteTodosComponent } from './components/favourite-todos/favourite-todos.component';
 import { CompletedTodosComponent } from './components/completed-todos/completed-todos.component';
+import { HttpClientModule } from '@angular/common/http';
+import { RegisterComponent } from './components/register/register.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +26,16 @@ import { CompletedTodosComponent } from './components/completed-todos/completed-
     TodoComponent,
     DeletedTodosComponent,
     FavouriteTodosComponent,
-    CompletedTodosComponent
+    CompletedTodosComponent,
+    RegisterComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

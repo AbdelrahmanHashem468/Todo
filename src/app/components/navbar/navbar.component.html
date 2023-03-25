@@ -47,25 +47,24 @@
   
         <!-- Notifications -->
         <div class="dropdown">
-          <strong class="d-none d-sm-block ms-1">{{_user.user.name}}</strong>
+          <h5  style="margin: 15px;" class="d-none d-sm-block ms-1">{{user?.name}}</h5>
         </div>
-
-        <div class="dropdown">
-
-          <strong class="d-none d-sm-block ms-1">{{_user.user.quote}}</strong>
-
-      </div>
         <!-- Avatar -->
         <div class="dropdown">
 
             <img
-              [src]="_user.user.photo"
+              [src]="user?.photo"
               class="rounded-circle"
-              height="25"
+              height="50"
               alt="Black and White Portrait of a Man"
               loading="lazy"
             />
         </div>
+
+        <a  (click)="logout()" class="LogOut"  >
+          <h4> LogOut </h4>
+        </a>
+
       </div>
       <!-- Right elements -->
     </div>

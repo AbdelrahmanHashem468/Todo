@@ -1,14 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { TodosService } from 'src/app/services/todos.service';
 import { MyTodoComponent } from '../my-todos/my-todos.component';
-interface Todo {
-  id:number,
-  todo:string,
-  isCompleted:boolean,
-  isDeleted:boolean,
-  isFavourite:boolean,
-  userId:number
-};
+
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
